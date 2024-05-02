@@ -5,7 +5,7 @@
 #ifndef SMARTHOME_GPIOINPUT_HPP
 #define SMARTHOME_GPIOINPUT_HPP
 #include <memory>
-#include "gpiodevice.hpp"
+#include "GPIODevice.hpp"
 
 namespace pitools {
     namespace gpio {

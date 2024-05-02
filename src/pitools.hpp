@@ -7,15 +7,15 @@
 
 #include "defs.hpp"
 #include "timers/WaitDuration.hpp"
-#include "gpio/gpiodevice.hpp"
+#include "gpio/GPIODevice.hpp"
 #include "gpio/GPIOInput.hpp"
 #include "gpio/GPIOOutput.hpp"
 
 #include "sensors/dht11.h"
 #include "sensors/hc04.hpp"
-#include "actuators/servo.hpp"
+#include "actuators/Servo.hpp"
 #include "actuators/HC595.h"
-#include "actuators/StepperMotor.hpp"
+#include "actuators/StepperMotor28BYJ48.hpp"
 #include "i2cdevices/LCD16x2.hpp"
 
 

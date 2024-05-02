@@ -5,7 +5,7 @@
 #ifndef SMARTHOME_GPIOOUTPUT_HPP
 #define SMARTHOME_GPIOOUTPUT_HPP
 
-#include "gpiodevice.hpp"
+#include "GPIODevice.hpp"
 #include <chrono>
 #include <thread>
 namespace pitools {

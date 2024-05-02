@@ -1,7 +1,7 @@
 //
 // Created by chiheb on 25/04/24.
 //
-#include "gpiodevice.hpp"
+#include "GPIODevice.hpp"
 #include "defs.hpp"
 #include <pigpio.h>
 namespace pitools {

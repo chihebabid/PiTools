@@ -1,8 +1,8 @@
 add_library(pitools pitools.hpp
-        gpio/gpiodevice.hpp
+        gpio/GPIODevice.hpp
         gpio/GPIOInput.cpp
         gpio/GPIOInput.hpp
-        gpio/gpiodevice.cpp
+        gpio/GPIODevice.cpp
         sensors/hc04.cpp sensors/dht11.cpp
         sensors/hc04.hpp sensors/dht11.h
         sensors/sensor.hpp
@@ -10,8 +10,8 @@ add_library(pitools pitools.hpp
         actuators/HC595.h
         actuators/HC595.cpp
         actuators/actuator.hpp
-        actuators/servo.cpp
-        actuators/servo.hpp
+        actuators/Servo.cpp
+        actuators/Servo.hpp
         i2cdevices/LCD16x2.cpp
         i2cdevices/LCD16x2.hpp
         defs.hpp
@@ -24,8 +24,8 @@ add_library(pitools pitools.hpp
         spidevices/SPIDevice.hpp
         gpio/GPIOOutput.cpp
         gpio/GPIOOutput.hpp
-        actuators/StepperMotor.cpp
-        actuators/StepperMotor.hpp
+        actuators/StepperMotor28BYJ48.cpp
+        actuators/StepperMotor28BYJ48.hpp
         timers/WaitDuration.hpp)
 
 target_link_libraries(pitools pigpio)

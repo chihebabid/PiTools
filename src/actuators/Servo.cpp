@@ -3,7 +3,7 @@
 //
 #include <iostream>
 #include <pigpio.h>
-#include "servo.hpp"
+#include "Servo.hpp"
 #include "defs.hpp"
 namespace pitools {
     namespace actuators {
