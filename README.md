@@ -26,6 +26,8 @@ PiTools offers a suite of classes that abstract the pigpio C library, enabling a
 
 ## Roadmap
 ### Upcoming Classes
+•  [**PCF8574**]:  8-bit I/O expander for the I2C bus.
+
 •  [**RC522**](https://www.bing.com/search?form=SKPBOT&q=RC522): RFID reader/writer module.
 
 
