@@ -9,5 +9,9 @@ namespace pitools {
         GPIOOutput::GPIOOutput(const uint8_t &p) : GPIODevice(p) {
             mode(GPIOMODE::OUTPUT);
         }
+        GPIOOutput& GPIOOutput::toggle() {
+            set(!static_cast<bool>(state()));
+            return *this;
+        }
     }
 }

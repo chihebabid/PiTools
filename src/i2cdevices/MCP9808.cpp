@@ -3,7 +3,7 @@
 //
 #include <thread>
 #include <pigpio.h>
-#include "mcp9808.hpp"
+#include "MCP9808.hpp"
 
 namespace pitools {
     namespace i2cdevices {

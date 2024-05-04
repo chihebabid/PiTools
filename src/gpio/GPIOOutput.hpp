@@ -13,7 +13,7 @@ namespace pitools {
         class GPIOOutput :public GPIODevice {
         public:
             GPIOOutput(const uint8_t &p);
-
+            GPIOOutput& toggle();
         };
 
 

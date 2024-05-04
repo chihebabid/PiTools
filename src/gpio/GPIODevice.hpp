@@ -31,7 +31,9 @@ namespace pitools {
             PUD_DOWN,
             PUD_UP
         };
-
+    /*
+     * @brief This class is the base class for every class to control a GPIO
+     */
     class GPIODevice : public pitools::timers::WaitDuration<GPIODevice> {
            GPIODevice(const GPIODevice&);
        protected:
@@ -45,6 +47,7 @@ namespace pitools {
            GPIODevice& clear();
            GPIODevice& use();
            GPIODevice& unuse();
+
        };
     }
 }

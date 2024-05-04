@@ -18,14 +18,18 @@ add_library(pitools pitools.hpp
         defs.cpp
         i2cdevices/I2CDevice.cpp
         i2cdevices/I2CDevice.hpp
-        i2cdevices/mcp9808.cpp
-        i2cdevices/mcp9808.hpp
+        i2cdevices/MCP9808.cpp
+        i2cdevices/MCP9808.hpp
         spidevices/SPIDevice.cpp
         spidevices/SPIDevice.hpp
         gpio/GPIOOutput.cpp
         gpio/GPIOOutput.hpp
         actuators/StepperMotor28BYJ48.cpp
         actuators/StepperMotor28BYJ48.hpp
-        timers/WaitDuration.hpp)
+        timers/WaitDuration.hpp
+
+        spidevices/mfrc522/MFRC522.cpp
+        spidevices/mfrc522/MFRC522.hpp
+)
 
 target_link_libraries(pitools pigpio)
