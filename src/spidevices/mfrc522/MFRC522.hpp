@@ -8,17 +8,44 @@
 #include "./gpio/GPIOOutput.hpp"
 namespace pitools {
     namespace spidevices {
+
+        constexpr uint8_t MFRC522_MAX_LEN {16};
         struct mfrc522_options_t : spi_options_t {
-            uint8_t hard_reset {0};
+            uint8_t hard_reset {25};
             char type {'B'};
         };
+
+        // Status
+        enum MFRC522_Status_t :uint8_t {
+            MI_OK,
+            MI_NOTAGERR,
+            MI_ERR
+        };
+
         class MFRC522 : public SPIDevice {
             std::unique_ptr<gpio::GPIODevice> mHardResetPin;
             char mType;
+            int mCheckingCard = 0;
+
             void init();
+
+            void clearRegisterBitMask(const uint8_t& reg,const uint8_t& mask);
+
+            void setRegisterBitMask(const uint8_t &reg,const uint8_t &mask);
+
+                MFRC522_Status_t toCard(uint8_t command, uint8_t* sendData,uint8_t sendLen, uint8_t* backData, uint16_t* backLen);
+
         public:
-            MFRC522(const mfrc522_options_t &options);
+            MFRC522(const mfrc522_options_t &options=mfrc522_options_t());
+
+            /*
+             * @brief Writes a number of uint8_ts to the specified register in the CMFRC522 chip.
+             * @param reg The register address to write to.
+             * @param value The value to write to the register
+             */
             void writeRegister(uint8_t reg, uint8_t value);
+
+            uint8_t readRegister(uint8_t reg);
             /*
              * @brief Initializes the MFRC522 chip
              */
@@ -27,7 +54,17 @@ namespace pitools {
              * @brief Make a hard reset to the MFRC522 chip
              */
             bool resetHardware();
+
+            void antennaOn();
+
+            void antennaOff();
+
+            MFRC522_Status_t request(uint8_t reqMode, uint8_t* TagType);
+
+            MFRC522_Status_t anticoll(uint8_t* serNum);
+
         };
+
 
 
         // CMFRC522 registers. Described in chapter 9 of the datasheet.
@@ -119,6 +156,9 @@ namespace pitools {
             PCD_MFAuthent 			= 0x0E,		// performs the MIFARE standard authentication as a reader
             PCD_SoftReset			= 0x0F		// resets the CMFRC522
         };
+
+        constexpr uint8_t PICC_REQIDL {0x26};  // find the antenna area does not enter hibernation
+        constexpr uint8_t PICC_ANTICOLL{0x93};   // anti-collision
     }
 }
 

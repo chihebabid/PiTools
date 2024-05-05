@@ -17,6 +17,7 @@
 #include "actuators/HC595.h"
 #include "actuators/StepperMotor28BYJ48.hpp"
 #include "i2cdevices/LCD16x2.hpp"
+#include "spidevices/mfrc522/MFRC522.hpp"
 
 
 #endif //SMARTHOME_PITOOLS_HPP

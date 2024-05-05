@@ -15,7 +15,7 @@ namespace pitools {
         };
         struct spi_options_t {
             uint8_t channel {0};
-            uint32_t speed;
+            uint32_t speed {100000};
             SPI_MODE mode {SPI_MODE::MODE0};
             bool active_low {true};
         };
