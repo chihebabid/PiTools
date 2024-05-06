@@ -90,13 +90,13 @@ namespace pitools {
             return rxBuf[1];
         }
 
-        MFRC522_Status_t MFRC522::request(uint8_t reqMode, uint8_t* TagType) {
+        MFRC522_Status_t MFRC522::request(PICC_Command reqMode, uint8_t* TagType) {
             MFRC522_Status_t status;
             uint16_t backBits;			//The received data bits
 
             writeRegister(BitFramingReg, 0x07);//TxLastBists = BitFramingReg[2..0]	???
 
-            TagType[0] = reqMode;
+            TagType[0] = static_cast<uint8_t >(reqMode);
 
             status = toCard(PCD_Transceive, TagType, 1, TagType, &backBits);
 
@@ -217,7 +217,7 @@ namespace pitools {
 
             writeRegister(BitFramingReg, 0x00);//TxLastBists = BitFramingReg[2..0]
 
-            serNum[0] = PICC_ANTICOLL;
+            serNum[0] = static_cast<uint8_t >(PICC_Command::ANTICOLL);
             serNum[1] = 0x20;
             status = toCard(PCD_Transceive, serNum, 2, serNum, &unLen);
 
@@ -241,7 +241,7 @@ namespace pitools {
             uint16_t recvBits;
             uint8_t buffer[32] = "";
 
-            buffer[0] = PICC_SElECTTAG;
+            buffer[0] = static_cast<uint8_t >(PICC_Command::SElECTTAG);
             buffer[1] = 0x70;
             for (i = 0; i < 5; i++) {
                 buffer[i + 2] = *(serNum + i);
@@ -330,7 +330,7 @@ namespace pitools {
             uint16_t unLen;
             uint8_t buff[4];
 
-            buff[0] = PICC_HALT;
+            buff[0] = static_cast<uint8_t>(PICC_Command::HALT);
             buff[1] = 0;
             calculateCRC(buff, 2, &buff[2]);
 
@@ -341,7 +341,7 @@ namespace pitools {
             MFRC522_Status_t status;
             uint16_t unLen;
 
-            recvData[0] = PICC_READ;
+            recvData[0] = static_cast<uint8_t>(PICC_Command::PICC_READ);
             recvData[1] = blockAddr;
             calculateCRC(recvData, 2, &recvData[2]);
             status = toCard(PCD_Transceive, recvData, 4, recvData, &unLen);
@@ -349,18 +349,17 @@ namespace pitools {
             if ((status != MI_OK) || (unLen != 0x90)) {
                 return MI_ERR;
             }
-
-            return (MFRC522_Status_t)unLen;
+            return status;
         }
 
-        MFRC522_Status_t MFRC522::auth(uint8_t authMode, uint8_t BlockAddr,uint8_t* Sectorkey, uint8_t* serNum) {
+        MFRC522_Status_t MFRC522::auth(PICC_Command authMode, uint8_t BlockAddr,uint8_t* Sectorkey, uint8_t* serNum) {
             MFRC522_Status_t status;
             uint16_t recvBits;
             uint8_t i;
             uint8_t buff[12];
 
             //Verify the command block address + sector + password + card serial number
-            buff[0] = authMode;
+            buff[0] = static_cast<uint8_t >(authMode);
             buff[1] = BlockAddr;
             for (i = 0; i < 6; i++) {
                 buff[i + 2] = *(Sectorkey + i);
@@ -368,7 +367,7 @@ namespace pitools {
             for (i = 0; i < 4; i++) {
                 buff[i + 8] = *(serNum + i);
             }
-            status = toCard(PCD_Transceive, buff, 12, buff, &recvBits);
+            status = toCard(PCD_MFAuthent, buff, 12, buff, &recvBits);
 
             if ((status != MI_OK)
                 || (!(readRegister(Status2Reg) & 0x08))) {
@@ -384,7 +383,7 @@ namespace pitools {
             uint8_t i;
             uint8_t buff[18];
 
-            buff[0] = PICC_WRITE;
+            buff[0] = static_cast<uint8_t>(PICC_Command::PICC_WRITE);
             buff[1] = blockAddr;
             calculateCRC(buff, 2, &buff[2]);
             status = toCard(PCD_Transceive, buff, 4, buff, &recvBits);
@@ -410,8 +409,9 @@ namespace pitools {
             return MI_OK;
 
             ERROR:
-            if (recvBits == 4) {
-                status = static_cast<MFRC522_Status_t>(buff[0] & 0x0F);
+
+            if (recvBits == 4 || (static_cast<MFRC522_Status_t>(buff[0] & 0x0F)==0x0A) ) {
+                status = MI_OK;
             } else {
                 status = MI_ERR;
             }

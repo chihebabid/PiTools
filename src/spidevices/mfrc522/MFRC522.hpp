@@ -16,10 +16,10 @@ namespace pitools {
         };
 
         // Status
-        enum MFRC522_Status_t :uint8_t {
-            MI_OK,
-            MI_NOTAGERR,
-            MI_ERR
+        enum MFRC522_Status_t :int8_t {
+            MI_OK=0,
+            MI_NOTAGERR=-1,
+            MI_ERR=-2
         };
 
 
@@ -35,6 +35,18 @@ namespace pitools {
             PICC_TYPE_ISO_18092,
             PICC_TYPE_UNKNOWN
         } PICC_TYPE_t;
+
+        enum class PICC_Command : uint8_t {
+            REQIDL = 0x26,  // find the antenna area does not enter hibernation
+            ANTICOLL = 0x93,   // anti-collision
+            SElECTTAG = 0x93,  // election card
+            HALT = 0x50,   // Sleep
+            AUTHENT1A = 0x60,   // authentication key A
+            PICC_AUTHENT1B =0x61,  // authentication key B
+            PICC_READ = 0x30,   // Read Block
+            PICC_WRITE = 0xA0
+        };
+
         static const char *PICC_TYPE_STRING[] = { "PICC_TYPE_NOT_COMPLETE", "PICC_TYPE_MIFARE_MINI",
                                      "PICC_TYPE_MIFARE_1K", "PICC_TYPE_MIFARE_4K", "PICC_TYPE_MIFARE_UL",
                                      "PICC_TYPE_MIFARE_PLUS", "PICC_TYPE_TNP3XXX", "PICC_TYPE_ISO_14443_4",
@@ -79,7 +91,7 @@ namespace pitools {
 
             void antennaOff();
 
-            MFRC522_Status_t request(uint8_t reqMode, uint8_t* TagType);
+            MFRC522_Status_t request(PICC_Command reqMode, uint8_t* TagType);
 
             MFRC522_Status_t anticoll(uint8_t* serNum);
 
@@ -95,7 +107,7 @@ namespace pitools {
 
             MFRC522_Status_t write(uint8_t blockAddr, uint8_t* writeData);
 
-            MFRC522_Status_t auth(uint8_t authMode, uint8_t BlockAddr,uint8_t* Sectorkey, uint8_t* serNum);
+            MFRC522_Status_t auth(PICC_Command authMode, uint8_t BlockAddr,uint8_t* Sectorkey, uint8_t* serNum);
 
 
 
@@ -192,13 +204,6 @@ namespace pitools {
             PCD_MFAuthent 			= 0x0E,		// performs the MIFARE standard authentication as a reader
             PCD_SoftReset			= 0x0F		// resets the CMFRC522
         };
-
-        constexpr uint8_t PICC_REQIDL {0x26};  // find the antenna area does not enter hibernation
-        constexpr uint8_t PICC_ANTICOLL{0x93};   // anti-collision
-        constexpr uint8_t PICC_SElECTTAG {0x93};  // election card
-        constexpr uint8_t PICC_HALT {0x50};   // Sleep
-        constexpr uint8_t PICC_READ {0x30};   // Read Block
-        constexpr uint8_t PICC_WRITE {0xA0};
     }
 }
 
