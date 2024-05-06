@@ -30,6 +30,7 @@ add_library(pitools pitools.hpp
 
         spidevices/mfrc522/MFRC522.cpp
         spidevices/mfrc522/MFRC522.hpp
+        ../samples/dht11/main.cpp
 )
 
 target_link_libraries(pitools pigpio)
