@@ -18,17 +18,21 @@ PiTools offers a suite of classes that abstract the pigpio C library, enabling a
 •  [**Servo Motors**](https://www.bing.com/search?form=SKPBOT&q=Servo%20Motors): Controlled by PWM signal.
 
 
-### I2C Components
+### I2C Devices
 •  [**MCP9808**](https://www.bing.com/search?form=SKPBOT&q=MCP9808): Temperature sensor.
 
 •  [**LCD 16x2**](https://www.bing.com/search?form=SKPBOT&q=LCD%2016x2): A 16x2 character LCD display.
 
+### SPI Devices
+•  [**RC522**](https://www.bing.com/search?form=SKPBOT&q=RC522): RFID reader/writer module.
 
 ## Roadmap
 ### Upcoming Classes
 •  [**PCF8574**]:  8-bit I/O expander for the I2C bus.
 
-•  [**RC522**](https://www.bing.com/search?form=SKPBOT&q=RC522): RFID reader/writer module.
+•  [**PCF8591**]: ADC device
+
+
 
 
 ## Contribution

@@ -22,7 +22,25 @@ namespace pitools {
             MI_ERR
         };
 
+
+        typedef enum{
+            PICC_TYPE_NOT_COMPLETE = 0,
+            PICC_TYPE_MIFARE_MINI,
+            PICC_TYPE_MIFARE_1K,
+            PICC_TYPE_MIFARE_4K,
+            PICC_TYPE_MIFARE_UL,
+            PICC_TYPE_MIFARE_PLUS,
+            PICC_TYPE_TNP3XXX,
+            PICC_TYPE_ISO_14443_4,
+            PICC_TYPE_ISO_18092,
+            PICC_TYPE_UNKNOWN
+        } PICC_TYPE_t;
+        static const char *PICC_TYPE_STRING[] = { "PICC_TYPE_NOT_COMPLETE", "PICC_TYPE_MIFARE_MINI",
+                                     "PICC_TYPE_MIFARE_1K", "PICC_TYPE_MIFARE_4K", "PICC_TYPE_MIFARE_UL",
+                                     "PICC_TYPE_MIFARE_PLUS", "PICC_TYPE_TNP3XXX", "PICC_TYPE_ISO_14443_4",
+                                     "PICC_TYPE_ISO_18092", "PICC_TYPE_UNKNOWN" };
         class MFRC522 : public SPIDevice {
+
             std::unique_ptr<gpio::GPIODevice> mHardResetPin;
             char mType;
             int mCheckingCard = 0;
@@ -33,7 +51,9 @@ namespace pitools {
 
             void setRegisterBitMask(const uint8_t &reg,const uint8_t &mask);
 
-                MFRC522_Status_t toCard(uint8_t command, uint8_t* sendData,uint8_t sendLen, uint8_t* backData, uint16_t* backLen);
+            MFRC522_Status_t toCard(uint8_t command, uint8_t* sendData,uint8_t sendLen, uint8_t* backData, uint16_t* backLen);
+
+            void calculateCRC(uint8_t* pIndata, uint8_t len, uint8_t* pOutData);
 
         public:
             MFRC522(const mfrc522_options_t &options=mfrc522_options_t());
@@ -62,6 +82,22 @@ namespace pitools {
             MFRC522_Status_t request(uint8_t reqMode, uint8_t* TagType);
 
             MFRC522_Status_t anticoll(uint8_t* serNum);
+
+            uint8_t selectTag(uint8_t* serNum);
+
+            const char *typeToString(PICC_TYPE_t type);
+
+            int parseType(uint8_t TagSelectRet);
+
+            void halt();
+
+            MFRC522_Status_t read(uint8_t blockAddr, uint8_t* recvData);
+
+            MFRC522_Status_t write(uint8_t blockAddr, uint8_t* writeData);
+
+            MFRC522_Status_t auth(uint8_t authMode, uint8_t BlockAddr,uint8_t* Sectorkey, uint8_t* serNum);
+
+
 
         };
 
@@ -159,6 +195,10 @@ namespace pitools {
 
         constexpr uint8_t PICC_REQIDL {0x26};  // find the antenna area does not enter hibernation
         constexpr uint8_t PICC_ANTICOLL{0x93};   // anti-collision
+        constexpr uint8_t PICC_SElECTTAG {0x93};  // election card
+        constexpr uint8_t PICC_HALT {0x50};   // Sleep
+        constexpr uint8_t PICC_READ {0x30};   // Read Block
+        constexpr uint8_t PICC_WRITE {0xA0};
     }
 }
 
