@@ -7,7 +7,7 @@ using namespace std::chrono_literals;
 
 int main() {
     gpioInitialise();
-     pitools::sensors::DHT11 p {16};
+     pitools::sensors::DHT11 p {16}; // DHT11 data bin assumed to be connected GPIO16
      while (1) {
          auto temp = p.getData();
          std::cout <<"Temperature: "<<temp.temperature << std::endl;

@@ -4,6 +4,7 @@
 
 #ifndef SMARTHOME_GPIODEVICE_HPP
 #define SMARTHOME_GPIODEVICE_HPP
+
 #include <cstdint>
 #include <chrono>
 #include <thread>
@@ -11,16 +12,16 @@
 
 namespace pitools {
     namespace gpio {
-       enum class GPIOMODE {
-           INPUT,
-           OUTPUT,
-           ALT0,
-           ALT1,
-           ALT2,
-           ALT3,
-           ALT4,
-           ALT5
-       };
+        enum class GPIOMODE {
+            INPUT,
+            OUTPUT,
+            ALT0,
+            ALT1,
+            ALT2,
+            ALT3,
+            ALT4,
+            ALT5
+        };
         enum class GPIOSTATE {
             LOW,
             HIGH
@@ -31,24 +32,38 @@ namespace pitools {
             PUD_DOWN,
             PUD_UP
         };
-    /*
-     * @brief This class is the base class for every class to control a GPIO
-     */
-    class GPIODevice : public pitools::timers::WaitDuration<GPIODevice> {
-           GPIODevice(const GPIODevice&);
-       protected:
-           uint8_t mPin;
-       public:
-           GPIODevice(const uint8_t &) ;
-           uint8_t getPin() const;
-           GPIODevice &mode(const GPIOMODE &m);
-           GPIOSTATE state() const;
-           GPIODevice&  set(const bool &b=1);
-           GPIODevice& clear();
-           GPIODevice& use();
-           GPIODevice& unuse();
 
-       };
+        /*
+         * @brief This class is the base class for every class to control a GPIO
+         */
+        class GPIODevice : public pitools::timers::WaitDuration<GPIODevice> {
+
+        protected:
+            uint8_t mPin;
+        public:
+            GPIODevice(const GPIODevice &) = delete;
+
+            GPIODevice(const GPIODevice &&) = delete;
+
+            GPIODevice &operator=(const GPIODevice &) = delete;
+
+            GPIODevice(const uint8_t &);
+
+            uint8_t getPin() const;
+
+            GPIODevice &mode(const GPIOMODE &m);
+
+            GPIOSTATE state() const;
+
+            GPIODevice &set(const bool &b = 1);
+
+            GPIODevice &clear();
+
+            GPIODevice &use();
+
+            GPIODevice &unuse();
+
+        };
     }
 }
 #endif //SMARTHOME_GPIODEVICE_HPP
